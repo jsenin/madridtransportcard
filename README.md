@@ -10,5 +10,8 @@ HOW TO INSTALL
 HOW TO RUN 
 
    run the app:
-     $ DEBUG=ttp-api:* npm start
+   $ cd src
+   $ DEBUG=ttp-api:* npm start
 
+   run with nodemon for developers
+   DEBUG=ttp-api:* nodemon app.js
