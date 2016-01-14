@@ -1,17 +1,38 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var Card = require('./datasource/card');
 
-// create a schema
-var cardSchema = new Schema({
-  
-  card_id: { type: String, required: true, unique: true },
-  notify_days_before_expire: { type: String },
-  title_expiration_date: { type: Date, required: true },
 
-  created_at: Date,
-  updated_at: Date
-});
 
-// the schema is useless so far
-// we need to create a model using it
-module.exports = mongoose.model('card', cardSchema);
+function findByCardId( id, callback ){
+    var options = {}
+    options.card_id = id;
+
+    return Card.find(options, callback );
+
+}
+
+function findExternal( id, callback ){
+    var err = {} ;
+
+    return callback( err, 'resultado externo' );
+}
+
+exports.get = function( id, callback ){
+    var card = new Card();
+    findByCardId( id , function( err, result ){
+        if ( err ){
+            return findExternal( id, callback );
+        }
+        return callback( err, result );
+    })
+}
+
+exports.add = function ( id, callback ){
+
+    var data = {'card_id' : id };
+    var card = new Card(data);
+    card.save(function(err, result){
+
+        callback(err, result);
+
+    });
+};
